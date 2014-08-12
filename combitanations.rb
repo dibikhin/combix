@@ -1,4 +1,9 @@
-﻿def find_combinations(str)
+﻿# for 'abc' combinations will be 
+#	[['c'], ['b'], ['b', 'c'], ['a'], ['a', 'c'], ['a', 'b'], ['a', 'b', 'c']]
+# due to bits of 1 to 7
+#	001, 010, 011, 100, 101, 110, 111
+# sequentially projected on 'abc'
+def find_combinations(str)
 	combs = []
 	len = 2 ** str.size - 1
 	(1..len).each do |size_num|
@@ -13,5 +18,5 @@
 	combs
 end
 
-source = '1234567890asdfgqwert'
+source = 'abc'
 puts find_combinations(source).inspect
