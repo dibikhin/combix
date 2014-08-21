@@ -1,6 +1,15 @@
 ﻿require 'pp'
 require 'ruby-prof'
 
+def count_bits(number, pos_count)
+	counter, bit_count = 0, 0
+	(0..pos_count).each do # each bit
+		bit_count += 1 if number & ( 1 << counter ) > 0
+		counter += 1
+	end
+	bit_count
+end
+
 # for 'abc' combinations will be 
 #	[['c'], ['b'], ['b', 'c'], ['a'], ['a', 'c'], ['a', 'b'], ['a', 'b', 'c']]
 # due to bits of 1 to 7
@@ -11,24 +20,20 @@ def find_combinations(source, selection_size)
 	combinations = []
 	len = 2 ** source.size - 1
 	num_bin_hash = {}
-	(1..len).each do |size_num|
+	(1..len).each do |number| # each number 1..n
 		selection, counter = [], 0
-		puts ("%0" + source.size.to_s + "b") % size_num
-		bit_counter = 0
-		(0..source.size).each do |bit_num|
-			if size_num & ( 1 << counter ) > 0
-				bit_counter += 1
-				if bit_counter >= selection_size
-					selection << source[counter]				
-				end
+		#puts ("%0" + source.size.to_s + "b") % number
+		(0..source.size).each do # each bit
+			if count_bits(number, source.size) == selection_size
+				selection << source[counter] if number & ( 1 << counter ) > 0				
 			end
 			counter += 1
 		end
-		combinations << selection
+		combinations << selection if !selection.empty?
 	end
 	puts RubyProf::FlatPrinter.new(RubyProf.stop).print(STDOUT)
 	combinations
 end
 
-source = (0..2).to_a
-pp find_combinations(source, 2)
+source = (0..20).to_a
+find_combinations(source, 2)
