@@ -35,5 +35,5 @@ def find_combinations(source, selection_size)
 	combinations
 end
 
-source = (0..20).to_a
+source = (0..10).to_a
 find_combinations(source, 2)
