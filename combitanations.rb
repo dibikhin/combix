@@ -19,14 +19,14 @@ def find_combinations(source, selection_size)
 	RubyProf.start
 	combinations = []
 	len = 2 ** source.size - 1
-	num_bin_hash = {}
 	(1..len).each do |number| # each number 1..n
 		selection, counter = [], 0
 		#puts ("%0" + source.size.to_s + "b") % number
 		(0..source.size).each do # each bit
-			if count_bits(number, source.size) == selection_size
+			#if count_bits(number, source.size) == selection_size
+				p [number, counter]
 				selection << source[counter] if number & ( 1 << counter ) > 0				
-			end
+			#end
 			counter += 1
 		end
 		combinations << selection if !selection.empty?
@@ -35,5 +35,5 @@ def find_combinations(source, selection_size)
 	combinations
 end
 
-source = (0..10).to_a
-find_combinations(source, 2)
+source = ('a'..'b').to_a
+pp find_combinations(source, 2)
