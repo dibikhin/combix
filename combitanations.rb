@@ -24,7 +24,7 @@ def find_combinations(source, selection_size)
 		#puts ("%0" + source.size.to_s + "b") % number
 		(0..source.size).each do # each bit
 			#if count_bits(number, source.size) == selection_size
-				p [number, counter]
+				#p [number, counter]
 				selection << source[counter] if number & ( 1 << counter ) > 0				
 			#end
 			counter += 1
@@ -35,5 +35,6 @@ def find_combinations(source, selection_size)
 	combinations
 end
 
-source = ('a'..'b').to_a
-pp find_combinations(source, 2)
+#source = ('a'..'b').to_a
+source = (1..17).to_a
+find_combinations(source, 2)
