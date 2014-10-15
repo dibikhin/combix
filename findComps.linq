@@ -3,29 +3,22 @@
 open System.Linq
 open Microsoft.FSharp.Linq
 
-type G = { Num: int; Val: char }
-
-let findCombs vals =
+let extractVals key value fold acc seq =
+    seq
+	|> Seq.map (fun (key, seq) -> seq |> Seq.map value)
+		
+let genCombs vals =
 	let len = (pown 2 (List.length vals)) - 1
 	seq {
 		for num in 0..len do
 			for shift in 0..((List.length vals) - 1) do 
 			 	if (num &&& (1 <<< shift)) > 0 then yield (num, vals.[shift]) } 
-				//{ Num = num; Val = vals.[shift] } }
-				 
-	|> Seq.groupBy (fun x -> fst x )
-	|> Seq.map (fun (k, v) -> v )//|> (fun (a, b) -> b))
-	//|> Seq.concat
+
+let findCombs vals =
+	genCombs vals
+	|> Seq.groupBy fst
+	|> extractVals fst snd (fun acc el -> Seq.concat [acc; el]) Seq.empty
 	
-// findCombs [1..17] |> Dump
+//findCombs [1..3] |> Dump
+//findCombs ['a'..'c'] |> Seq.length |> Dump
 findCombs ['a'..'c'] |> Dump
-
-
-//testQuery |> Dump
-
-//let testQuery =
-//	query {
-//		for comb in findCombs ['a'..'c'] do
-//		groupBy (fst(comb)) into g
-//		select g
-//	}
