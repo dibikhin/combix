@@ -12,14 +12,24 @@ let genCombs vals =
 	seq {
 		for num in 0..len do
 			for shift in 0..((List.length vals) - 1) do 
-			 	yield (num, num &&& (1 <<< shift), num &&& 0b11, vals.[shift], System.Convert.ToString(num, 2)) } 
+			 	if num &&& (1 <<< shift) > 0 then yield (num, vals.[shift]) } 
 
 let findCombs vals =
-	genCombs vals
+	//genCombs vals
 	//|> Seq.groupBy fst
+	query {
+    	for tpl in (genCombs(vals)) do
+    	groupBy (fst(tpl)) into g
+    	select (g.Key, g.Count(), g)
+    }
 	//|> extractVals fst snd (fun acc el -> Seq.concat [acc; el]) Seq.empty
 	
 //findCombs [1..3] |> Dump
 //findCombs ['a'..'c'] |> Seq.length |> Dump
 //findCombs ['a'..'c'] |> Dump
-genCombs ['a'..'c'] |> Dump
+
+findCombs ['a'..'c'] |> Dump
+
+// 3 5 6 9 10 12
+// 7 11 13 14 19 21 22 23 25 26 28
+// 15 23 27 29 30
