@@ -1,27 +1,22 @@
 <Query Kind="FSharpProgram" />
 
-let extractVals key value fold acc seq =
-    seq
-	|> Seq.map (fun (key, seq) -> seq |> Seq.map value)
-		
 let genCombs vals =
-	let len = (pown 2 (List.length vals)) - 1
+	let len = (pown 2 (Seq.length vals)) - 1
+	let cnt = ((Seq.length vals) - 1)
 	seq {
 		for num in 0..len do
-			for ix in 0..((List.length vals) - 1) do 
-			 	if num &&& (1 <<< ix) > 0 then yield (num, vals.[ix]) } 
+			let sel =
+				seq {
+					for ix in 0..cnt do 
+			 			if num &&& (1 <<< ix) > 0 then 
+							yield Seq.nth ix vals }
+			yield sel }
 
-let findCombs n vals =
-	query {
-    	for tpl in (genCombs(vals)) do
-    	groupBy (fst(tpl)) into g
-		where (g.Count() = n) 
-    	select (g.Key, g)
-    }
-	|> extractVals fst snd (fun acc el -> Seq.concat [acc; el]) Seq.empty
-	
-//findCombs [1..3] |> Dump
-
-findCombs 2 ['a'..'c'] |> Dump
-
-if num &&& (1 <<< ix) > 0 then yield (num, vals.[ix], num &&& (1 <<< ix), ix) } 
+let findCombs size vals =
+	vals
+	|> genCombs
+	|> Seq.filter (fun x -> x |> Seq.length = size)
+			
+//findCombs 2 [1..3] |> Seq.length |> Dump
+//findCombs 2 ['a'..'s'] |> Seq.length |> Dump // -> 171
+findCombs 2 ['a'..'s'] |> Dump
