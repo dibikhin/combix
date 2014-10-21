@@ -3,13 +3,16 @@
 let findCombs size vals =
 	let len = (pown 2 (Seq.length vals)) - 1
 	let cnt = ((Seq.length vals) - 1)
-	let seqcnt = seq { 0..cnt }
+	let seqcnt = seq { 0..cnt } 
 	seq { 1..len }
 	|> Seq.map (fun num ->
 		let sel =
 			seqcnt
-			|> Seq.filter (fun ix -> num &&& (1 <<< ix) > 0)
-			|> Seq.map (fun ixn -> Seq.nth ixn vals)			
+			//|> Seq.filter (fun ix -> num &&& (1 <<< ix) > 0)
+			//|> Seq.map (fun ixn -> Seq.nth ixn vals)			
+			//|> Seq.filter (fun ix -> num &&& (1 <<< ix) > 0)
+			|> Seq.map (fun ixn -> if num &&& (1 <<< ixn) > 0 then Seq.nth ixn vals else 'z')
+		//sel)
 		if Seq.length(sel) = size then sel else Seq.empty)
 		
 			//|> Seq.filter (fun x -> x |> Seq.length = size)
