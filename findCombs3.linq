@@ -8,18 +8,22 @@ let findCombs size vals =
 	|> Seq.map (fun num ->
 		let sel =
 			seqcnt
-			//|> Seq.filter (fun ix -> num &&& (1 <<< ix) > 0)
-			//|> Seq.map (fun ixn -> Seq.nth ixn vals)			
-			//|> Seq.filter (fun ix -> num &&& (1 <<< ix) > 0)
-			|> Seq.map (fun ixn -> if num &&& (1 <<< ixn) > 0 then Seq.nth ixn vals else 'z')
-		//sel)
-		if Seq.length(sel) = size then sel else Seq.empty)
-		
-			//|> Seq.filter (fun x -> x |> Seq.length = size)
+			|> Seq.filter (fun ix -> num &&& (1 <<< ix) > 0)
+			|> Seq.map (fun ixn -> Seq.nth ixn vals)
+		sel)
+		|> Seq.filter (fun x -> x |> Seq.length = size)
+
 //findCombs 2 [1..3] |> Seq.length |> Dump
 //findCombs 2 [|'a'..'s'|] |> Seq.length |> Dump // -> 171
-//findCombs 2 ['a'..'s'] |> Seq.length |> Dump
 
 findCombs 2 ['a'..'s'] |> Seq.length |> Dump
 
 //findCombs 2 ['a'..'c'] |> Dump
+
+001
+010
+011
+100
+101
+110
+111
