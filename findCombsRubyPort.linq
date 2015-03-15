@@ -3,12 +3,12 @@
 void Main()
 {
 	//Go(new [] { 1, 2, 3 }).Dump();
-	Go(Enumerable.Range(1, 100).ToArray()).Count().Dump();
+	Go(Enumerable.Range(1, 3).ToArray()).ToArray().Dump();
 }
 
-// Define other methods and classes here
+// Ruby 2.0.0 combinations port
 private static IEnumerable<int[]> Go(int[] arr){
-var n = 2;
+	var n = 2;
 	var len = arr.Length;
 	var stack = new int[len];
 	
@@ -31,6 +31,6 @@ var n = 2;
 	   ;
 }
 
-private static int[] Extract(int[] arr, int[] ind){
-	return arr.Zip(ind, (label, value) => arr[value]).ToArray();
+private static int[] Extract(int[] arr, int[] indList){
+	return arr.Zip(indList, (ix, value) => arr[value]).ToArray();
 }
